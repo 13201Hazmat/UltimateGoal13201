@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -27,7 +28,8 @@ import org.firstinspires.ftc.teamcode.util.DashboardUtil;
  * want that to interfere with our graph so we just directly update localizer instead
  */
 @Config
-@TeleOp(group = "advanced")
+@TeleOp(name = "TestAdvanced:TeleOpAlignWithPoint", group = "TestAdvanced")
+@Disabled
 public class TeleOpAlignWithPoint extends LinearOpMode {
 
     public static double DRAWING_TARGET_RADIUS = 2;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +17,9 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @Config
-@TeleOp(group = "drive")
+//@TeleOp(group = "drive")
+@TeleOp(name = "Calib:RR-LocalizationTest", group = "Calibration")
+@Disabled
 public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,6 +41,10 @@ public class LocalizationTest extends LinearOpMode {
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
+            telemetry.addLine("Time : 11:34 11/28/2020");
+            //telemetry.addData("Left Encoder value", StandardTrackingWheelLocalizer.leftEncoder.getCurrentPosition());
+            //telemetry.addData("Right Encoder value", StandardTrackingWheelLocalizer.rightEncoder.getCurrentPosition());
+            //telemetry.addData("Front Encoder value", StandardTrackingWheelLocalizer.frontEncoder.getCurrentPosition());
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());

@@ -30,6 +30,9 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.teamcode.util.AxesSigns;
+import org.firstinspires.ftc.teamcode.util.BNO055IMUUtil;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -52,10 +55,24 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    //public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    //public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    //TestRobot Calibration Parameters
+    //public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
+    //public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    //Main Robot Calibration Parameters
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(4.5, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
+
+    //public static double LATERAL_MULTIPLIER = 1;
+    //EDIT THIS FOR STRAFE TEST
+    //TestRobot Calibration Parameters
+    //public static double LATERAL_MULTIPLIER = 60.0/52.0; //1;
+
+    //Main Robot Calibration Parameters
+    public static double LATERAL_MULTIPLIER = 1.14988235294117; //1;//(60.0/25.0); //60.0/61.0;
+
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -118,20 +135,30 @@ public class SampleMecanumDrive extends MecanumDrive {
             module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
 
-        // TODO: adjust the names of the following hardware devices to match your configuration
+
+        // adjust the names of the following hardware devices to match your configuration
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
 
-        // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
-        // upward (normal to the floor) using a command like the following:
-        // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        //  if your hub is mounted vertically, remap the IMU axes so that the z-axis points
+        // upward (normal to the floor) using a command like the following:
+        BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+
+
+
+        //leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        //leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        //rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
+        //rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        //TestRobot Calibration Parameters
+        leftFront = hardwareMap.get(DcMotorEx.class, "flmotor");
+        leftRear = hardwareMap.get(DcMotorEx.class, "blmotor");
+        rightRear = hardwareMap.get(DcMotorEx.class, "brmotor");
+        rightFront = hardwareMap.get(DcMotorEx.class, "frmotor");
+
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -151,10 +178,18 @@ public class SampleMecanumDrive extends MecanumDrive {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
 
-        // TODO: reverse any motors using DcMotor.setDirection()
+        // reverse any motors using DcMotor.setDirection()
+        //TestRobot Calibration Parameters
+        //rightFront.setDirection(DcMotor.Direction.REVERSE);
+        //rightRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
 
-        // TODO: if desired, use setLocalizer() to change the localization method
+
+        // use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
+        //setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap));
+
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -381,6 +416,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
+        //return 0; /* Removed IMU */
         return imu.getAngularOrientation().firstAngle;
     }
 

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -62,8 +63,10 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
  * precision. The heading should still line up.
  */
 @Config
-@TeleOp(group = "drive")
-public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
+//@TeleOp(group = "drive")
+@TeleOp(name = "Calib:RR-TrackingWheelLateralDistanceTuner", group = "Calibration")
+@Disabled
+public class  TrackingWheelLateralDistanceTuner extends LinearOpMode {
     public static int NUM_TURNS = 10;
 
     @Override
@@ -108,6 +111,7 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
             lastHeading = heading;
 
             telemetry.clearAll();
+            telemetry.addLine("Time : 7:30 11/27/2020");
             telemetry.addLine("Total Heading (deg): " + Math.toDegrees(headingAccumulator));
             telemetry.addLine("Raw Heading (deg): " + Math.toDegrees(heading));
             telemetry.addLine();
@@ -119,6 +123,8 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
         }
 
         telemetry.clearAll();
+        telemetry.addLine("Time : 7:30 11/27/2020");
+        telemetry.addLine("StandardTrackingWheelLocalizer.LATERAL_DISTANCE: " + StandardTrackingWheelLocalizer.LATERAL_DISTANCE);
         telemetry.addLine("Localizer's total heading: " + Math.toDegrees(headingAccumulator) + "°");
         telemetry.addLine("Effective LATERAL_DISTANCE: " +
                 (headingAccumulator / (NUM_TURNS * Math.PI * 2)) * StandardTrackingWheelLocalizer.LATERAL_DISTANCE);
